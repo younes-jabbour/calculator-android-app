@@ -2,7 +2,9 @@ package ma.tp.calculatrice;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -31,29 +33,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        switchButton = findViewById(R.id.switchButton);
-        textOperation = findViewById(R.id.textDisplay);
-        textResult = findViewById(R.id.textDisplayResult);
-
-        clearButton = findViewById(R.id.clearButton);
-        deleteButton = findViewById(R.id.deleteButton);
-        percentButton = findViewById(R.id.percentButton);
-        divideButton = findViewById(R.id.divideButton);
-        multiplyButton = findViewById(R.id.multiplyButton);
-        minusButton = findViewById(R.id.minusButton);
-        plusButton = findViewById(R.id.plusButton);
-        commaButton = findViewById(R.id.commaButton);
-        equalButton = findViewById(R.id.equalButton);
-
-        for (int i = 0; i < 10; i++) {
-            String buttonID = "Button" + i;
-            int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
-            numberButtons[i] = findViewById(resID);
-        }
-
+        initButtons(); // initialize the buttons
 
         operatorButtons.add(divideButton);
         operatorButtons.add(multiplyButton);
@@ -176,7 +160,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Switch to Scientific Calculator Activity
+            Intent intent = new Intent(this, LandActivity.class);
+            startActivity(intent);
+        }
+    }
     public String replaceOperators(String text) {
         text = text.replaceAll(multiplyButton.getText().toString(), "*");
         text = text.replaceAll("÷", "/");
@@ -198,15 +190,28 @@ public class MainActivity extends AppCompatActivity {
         return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
-    public void initTextViews() {
-    }
-
     public void initButtons() {
+        for (int i = 0; i < 10; i++) {
+            String buttonID = "Button" + i;
+            int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
+            numberButtons[i] = findViewById(resID);
+        }
+
+        switchButton = findViewById(R.id.switchButton);
+        textOperation = findViewById(R.id.textDisplay);
+        textResult = findViewById(R.id.textDisplayResult);
+
+        clearButton = findViewById(R.id.clearButton);
+        deleteButton = findViewById(R.id.deleteButton);
+        percentButton = findViewById(R.id.percentButton);
+        divideButton = findViewById(R.id.divideButton);
+        multiplyButton = findViewById(R.id.multiplyButton);
+        minusButton = findViewById(R.id.minusButton);
+        plusButton = findViewById(R.id.plusButton);
+        commaButton = findViewById(R.id.commaButton);
+        equalButton = findViewById(R.id.equalButton);
     }
 
-    public void initNumberButtons() {
-
-    }
 
     public boolean isLastOperator(String text) {
         if (text.length() > 0) {

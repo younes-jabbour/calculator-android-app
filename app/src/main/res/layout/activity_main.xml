@@ -142,7 +142,8 @@
 
         <Button
             android:id="@+id/equalButton"
-            style="@style/OperationsButtonStyle"
-            android:text="=" />
+            style="@style/EqualButtonStyle"
+            android:text="="
+            android:textStyle="bold"/>
     </TableRow>
 </TableLayout>

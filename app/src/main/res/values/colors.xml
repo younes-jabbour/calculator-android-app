@@ -4,6 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="lightWhite">#FAF8FF</color>
     <color name="orange">#FF4F00</color>
+    <color name="lightOrange">#FFE9CF</color>
     <color name="lightGray">#FFD3D3D3</color>
     <color name="veryLightGray">#F2ECFF</color>
     <color name="darkGray">#FFA9A9A9</color>
@@ -20,5 +21,4 @@
     <color name="lightYellow">#FFFFFFE0</color>
     <color name="yellow">#FFFFFF00</color>
     <color name="darkYellow">#FFBDB76B</color>
-    <color name="lightOrange">#FFFFA500</color>
 </resources>
