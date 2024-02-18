@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:shrinkColumns="*"
+    android:stretchColumns="*"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textDisplay"
+        android:paddingHorizontal="5dp"
+        android:layout_height="180dp"
+        android:text=""
+        android:textAlignment="textEnd"
+        android:textSize="15sp"
+        android:textColor="@color/gray"/>
+    <TextView
+        android:id="@+id/textDisplayResult"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="10dp"
+        android:text="0"
+        android:textStyle="bold"
+        android:textAlignment="textEnd"
+        android:textSize="15sp" />
+
+    <TableRow>
+        <Button
+            android:id="@+id/clearButton"
+            style="@style/OperationsButtonStyle"
+            android:text="C" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@style/OperationsButtonStyle"
+            android:text="\u232B" />
+
+        <Button
+            android:id="@+id/percentButton"
+            style="@style/OperationsButtonStyle"
+            android:text="%" />
+
+        <Button
+            android:id="@+id/divideButton"
+            style="@style/OperationsButtonStyle"
+            android:text="&#247;"
+            android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/Button1"
+            style="@style/ButtonStyle"
+            android:text="1"
+           />
+
+        <Button
+            android:id="@+id/Button2"
+            style="@style/ButtonStyle"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/Button3"
+            style="@style/ButtonStyle"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/multiplyButton"
+            style="@style/OperationsButtonStyle"
+            android:text="&#215;"
+            android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/Button4"
+            style="@style/ButtonStyle"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/Button5"
+            style="@style/ButtonStyle"
+            android:layout_height="wrap_content"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/Button6"
+            style="@style/ButtonStyle"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/minusButton"
+            style="@style/OperationsButtonStyle"
+            android:text="&#8722;"
+            android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/Button7"
+            style="@style/ButtonStyle"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/Button8"
+            style="@style/ButtonStyle"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/Button9"
+            style="@style/ButtonStyle"
+            android:text="9" />
+
+        <Button
+            android:id="@+id/plusButton"
+            style="@style/OperationsButtonStyle"
+            android:text="&#43;"
+            android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/switchButton"
+            style="@style/OperationsButtonStyle"
+            android:text="\u21C4"
+         />
+        <Button
+            android:id="@+id/Button0"
+            style="@style/ButtonStyle"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/commaButton"
+            style="@style/ButtonStyle"
+            android:text="," />
+
+        <Button
+            android:id="@+id/equalButton"
+            style="@style/OperationsButtonStyle"
+            android:text="=" />
+    </TableRow>
+</TableLayout>

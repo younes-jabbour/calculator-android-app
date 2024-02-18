@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:shrinkColumns="*"
+    android:stretchColumns="*"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/textDisplay"
+        android:layout_height="90dp"
+        android:paddingHorizontal="5dp"
+        android:text=""
+        android:textAlignment="textEnd"
+        android:textColor="@color/gray"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/textDisplayResult"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="10dp"
+        android:text="0"
+        android:textAlignment="textEnd"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <TableRow>
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="2nd" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="deg" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="sin" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="cos" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="tan" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="x\u207F" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="lg" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="ln" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="(" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text=")" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="\u221A(x)" />
+
+        <Button
+            android:id="@+id/clearButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="C" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="DEL" />
+
+        <Button
+            android:id="@+id/percentButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="%"
+            android:textSize="10sp" />
+
+        <Button
+            android:id="@+id/divideButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="&#247;"
+            android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="x!" />
+
+        <Button
+            android:id="@+id/Button1"
+            style="@style/LandscapeButtonStyle"
+            android:text="1" />
+
+        <Button
+            android:id="@+id/Button2"
+            style="@style/LandscapeButtonStyle"
+            android:text="2" />
+
+        <Button
+            android:id="@+id/Button3"
+            style="@style/LandscapeButtonStyle"
+            android:text="3" />
+
+        <Button
+            android:id="@+id/multiplyButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="&#215;"
+            android:textStyle="normal" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="1/x" />
+
+        <Button
+            android:id="@+id/Button4"
+
+            style="@style/LandscapeButtonStyle"
+            android:text="4" />
+
+        <Button
+            android:id="@+id/Button5"
+
+            style="@style/LandscapeButtonStyle"
+            android:text="5" />
+
+        <Button
+            android:id="@+id/Button6"
+            style="@style/LandscapeButtonStyle"
+            android:text="6" />
+
+        <Button
+            android:id="@+id/minusButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="&#8722;" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="\u03C0" />
+
+        <Button
+            android:id="@+id/Button7"
+            style="@style/LandscapeButtonStyle"
+            android:text="7" />
+
+        <Button
+            android:id="@+id/Button8"
+            style="@style/LandscapeButtonStyle"
+            android:text="8" />
+
+        <Button
+            android:id="@+id/Button9"
+            style="@style/LandscapeButtonStyle"
+            android:text="9" />
+
+        <Button
+            android:id="@+id/plusButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="&#43;" />
+    </TableRow>
+
+    <TableRow>
+
+        <Button
+            android:id="@+id/switchButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="\u21C4" />
+
+        <Button
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="e" />
+
+        <Button
+            android:id="@+id/Button0"
+            style="@style/LandscapeButtonStyle"
+            android:text="0" />
+
+        <Button
+            android:id="@+id/commaButton"
+            style="@style/LandscapeButtonStyle"
+            android:text=","
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/equalButton"
+            style="@style/LandscapeOperationsButtonStyle"
+            android:text="=" />
+    </TableRow>
+</TableLayout>
