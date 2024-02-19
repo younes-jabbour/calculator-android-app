@@ -44,6 +44,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     testImplementation("junit:junit:4.13.2")
     implementation ("io.apisense:rhino-android:1.0")
+    implementation ("org.mariuszgromada.math:MathParser.org-mXparser:5.2.1")
     implementation("androidx.test:runner:1.4.0")
     implementation("androidx.test.ext:junit:1.1.3")
     testImplementation ("org.robolectric:robolectric:4.3.1")

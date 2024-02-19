@@ -1,26 +1,29 @@
 package ma.tp.calculatrice;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Objects;
 
-import javax.script.ScriptEngine;
+import org.mariuszgromada.math.mxparser.Expression;
 
 public class LandActivity extends AppCompatActivity {
     private TextView textOperation, textResult;
     private Button multiplyButton, minusButton, plusButton, switchButton, commaButton, equalButton, clearButton, deleteButton, percentButton, divideButton;
-    private Button degButton, sinButton, cosButton, tanButton, powerButton, lgButton, lnButton, leftBracketButton, rightBracketButton, squareButton, factorialButton, oneDivideXButton, piButton, expButton;
-    private Button[] numberButtons = new Button[10];
-    private ArrayList<Button> operatorButtons = new ArrayList<>();
+    private Button ModuloButton, sinButton, cosButton, tanButton, powerButton, lgButton, lnButton, leftBracketButton, rightBracketButton, squareButton, factorialButton, oneDivideXButton, piButton, expButton;
+    private final Button[] numberButtons = new Button[10];
+    private final ArrayList<Button> operatorButtons = new ArrayList<>();
 
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -30,21 +33,25 @@ public class LandActivity extends AppCompatActivity {
         initButtons(); // initialize the buttons.
         initScientificButtons(); // initialize the scientific buttons.
 
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            String text = bundle.getString("textOperation");
+            String result = bundle.getString("textResult");
+            textOperation.setText(text);
+            textResult.setText(result);
+        }
+
         operatorButtons.add(divideButton);
         operatorButtons.add(multiplyButton);
         operatorButtons.add(minusButton);
         operatorButtons.add(plusButton);
         operatorButtons.add(commaButton);
 
-        /**
-         * switch button from portrait to landscape and vice versa
-         */
         switchButton.setOnClickListener(v -> {
-            if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+            if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            } else {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
+            else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
         });
 
         /**
@@ -57,7 +64,6 @@ public class LandActivity extends AppCompatActivity {
                 textOperation.setText(text);
             });
         }
-
         /**
          * listener to the numbers [0-9]
          */
@@ -86,44 +92,25 @@ public class LandActivity extends AppCompatActivity {
         });
 
         /**
-         * listener to the percent %
+         * listener to the percent %.
          */
         percentButton.setOnClickListener(v -> {
-            String numbers = textOperation.getText().toString();
-            String originalText = numbers;
-            if (numbers.length() == 0) {
-                return;
-            }
-            if (isLastOperator(numbers))
-                return;
-
-            numbers = replaceOperators(numbers);
-            String[] operation = numbers.split("[+\\-*/]");
-
-
-            double lastNumber = Double.parseDouble(operation[operation.length - 1]);
-            lastNumber /= 100;
-            String updatedOperation = originalText.substring(0, originalText.length() - operation[operation.length - 1].length());
-            updatedOperation += lastNumber;
-            textOperation.setText(updatedOperation);
+            String expression = textOperation.getText().toString();
+            getLastThenUpdate(expression, "%");
         });
-        /**
-         * equal button listener
+
+        /** Equal operator listener.
          */
         equalButton.setOnClickListener(v -> {
             String text = textOperation.getText().toString();
             text = replaceOperators(text);
             try {
-                // Evaluate the expression using the JavaScript engine
-                ScriptEngine engine = new javax.script.ScriptEngineManager().getEngineByName("rhino");
                 if (isLastOperator(text)) // if the last character is an operator, return without calculating
                     return;
-                double result = (double) engine.eval(text);
+                Expression e = new Expression(text);
+                double result = e.calculate();
 
-                // Display the result
-                DecimalFormat df = new DecimalFormat("##.####");
-                String formattedString = df.format(result);
-                textResult.setText(formattedString);
+                textResult.setText(formatNumber(result));
             } catch (Exception e) {
                 textResult.setText("error");
             }
@@ -145,6 +132,74 @@ public class LandActivity extends AppCompatActivity {
             text += "(";
             textOperation.setText(text);
         });
+        piButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "π";
+            textOperation.setText(text);
+        });
+        powerButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "^";
+            textOperation.setText(text);
+        });
+        lgButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "lg(";
+            textOperation.setText(text);
+        });
+        lnButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "ln(";
+            textOperation.setText(text);
+        });
+        expButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "e^";
+            textOperation.setText(text);
+        });
+        squareButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "sqrt(";
+            textOperation.setText(text);
+        });
+        factorialButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            getLastThenUpdate(text, "!");
+        });
+        oneDivideXButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            getLastThenUpdate(text, "/");
+        });
+        tanButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "tan(";
+            textOperation.setText(text);
+        });
+        cosButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "cos(";
+            textOperation.setText(text);
+        });
+
+        ModuloButton.setOnClickListener(v -> {
+            String text = textOperation.getText().toString();
+            text += "#";
+            textOperation.setText(text);
+        });
+
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            Intent intent = new Intent(this, MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("textOperation", textOperation.getText().toString());
+            bundle.putString("textResult", textResult.getText().toString());
+            intent.putExtras(bundle);
+            startActivity(intent);
+        }
     }
 
     public void initButtons() {
@@ -175,6 +230,7 @@ public class LandActivity extends AppCompatActivity {
         text = text.replaceAll(",", ".");
         text = text.replaceAll(" ", "");
         text = text.replaceAll("−", "-");
+        text = text.replaceAll("π", "pi");
         return text;
     }
 
@@ -182,7 +238,7 @@ public class LandActivity extends AppCompatActivity {
         return c == '+' || c == '-' || c == '*' || c == '/';
     }
 
-    public boolean isLastOperator(@NonNull String text) {
+    public boolean isLastOperator(String text) {
         if (text.length() > 0) {
             String last = text.substring(text.length() - 1);
             return isOperator(last.charAt(0));
@@ -190,9 +246,13 @@ public class LandActivity extends AppCompatActivity {
         return false;
     }
 
+    public String getLastNumber(String text) {
+        String[] numbers = text.split("[+\\-*/]");
+        return numbers[numbers.length - 1];
+    }
+
     public void initScientificButtons() {
-        degButton = findViewById(R.id.degButton);
-        degButton = findViewById(R.id.degButton);
+
         sinButton = findViewById(R.id.sinButton);
         cosButton = findViewById(R.id.cosButton);
         tanButton = findViewById(R.id.tanButton);
@@ -206,5 +266,50 @@ public class LandActivity extends AppCompatActivity {
         oneDivideXButton = findViewById(R.id.oneDivideXButton);
         piButton = findViewById(R.id.piButton);
         expButton = findViewById(R.id.expButton);
+        ModuloButton = findViewById(R.id.ModuloButton);
+    }
+
+    public void getLastThenUpdate(String text, String operator) {
+        if (text.length() == 0)
+            return;
+        replaceOperators(text);
+        if (isLastOperator(text))
+            return;
+
+        try {
+            String last = getLastNumber(text);
+            text = text.substring(0, text.length() - last.length());
+            if (Objects.equals(operator, "/")) {
+                if (last.equals("0")) {
+                    textResult.setText("error");
+                } else {
+                    Expression e = new Expression("1" + operator + last);
+                    double result = e.calculate();
+                    text += formatNumber(result);
+                    textOperation.setText(inverseOperation(text));
+                }
+                return;
+            }
+            Expression e = new Expression(last + operator);
+            double result = e.calculate();
+            text += formatNumber(result);
+            textOperation.setText(inverseOperation(text));
+        } catch (Exception e) {
+            textResult.setText("error");
+        }
+    }
+
+    public String inverseOperation(String text) {
+        text = text.replaceAll("\\*", "x");
+        text = text.replaceAll("/", "÷");
+        text = text.replaceAll("\\.", ",");
+        text = text.replaceAll("−", "-");
+        text = text.replaceAll("pi", "π");
+        return text;
+    }
+
+    public String formatNumber(double result) {
+        DecimalFormat df = new DecimalFormat("##.#####");
+        return df.format(result);
     }
 }
