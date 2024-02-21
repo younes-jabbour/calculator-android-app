@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Button;
@@ -15,11 +14,12 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import org.mariuszgromada.math.mxparser.Expression;
+import org.mariuszgromada.math.mxparser.mXparser;
 
 public class LandActivity extends AppCompatActivity {
     private TextView textOperation, textResult;
-    private Button multiplyButton, minusButton, plusButton, switchButton, commaButton, equalButton, clearButton, deleteButton, percentButton, divideButton;
-    private Button ModuloButton, sinButton, cosButton, tanButton, powerButton, lgButton, lnButton, leftBracketButton, rightBracketButton, squareButton, factorialButton, oneDivideXButton, piButton, expButton;
+    private Button multiplyButton, minusButton, plusButton, commaButton, equalButton, clearButton, deleteButton, percentButton, divideButton;
+    private Button degAndRadButton, ModuloButton, sinButton, cosButton, tanButton, powerButton, lgButton, lnButton, leftBracketButton, rightBracketButton, squareButton, factorialButton, oneDivideXButton, piButton, expButton;
     private final Button[] numberButtons = new Button[10];
     private final ArrayList<Button> operatorButtons = new ArrayList<>();
 
@@ -30,8 +30,8 @@ public class LandActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initButtons(); // initialize the buttons.
-        initScientificButtons(); // initialize the scientific buttons.
+        initButtons();
+        initScientificButtons();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -46,13 +46,6 @@ public class LandActivity extends AppCompatActivity {
         operatorButtons.add(minusButton);
         operatorButtons.add(plusButton);
         operatorButtons.add(commaButton);
-
-        switchButton.setOnClickListener(v -> {
-            if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            else if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
-        });
 
         /**
          * listener to the operators [+,-,*,/]
@@ -91,8 +84,7 @@ public class LandActivity extends AppCompatActivity {
             }
         });
 
-        /**
-         * listener to the percent %.
+        /** listener to the percent %.
          */
         percentButton.setOnClickListener(v -> {
             String expression = textOperation.getText().toString();
@@ -104,18 +96,23 @@ public class LandActivity extends AppCompatActivity {
         equalButton.setOnClickListener(v -> {
             String text = textOperation.getText().toString();
             text = replaceOperators(text);
-            try {
-                if (isLastOperator(text)) // if the last character is an operator, return without calculating
-                    return;
-                Expression e = new Expression(text);
-                double result = e.calculate();
 
-                textResult.setText(formatNumber(result));
-            } catch (Exception e) {
-                textResult.setText("error");
+            if (isLastOperator(text)) // if the last character is an operator, return without calculating
+                return;
+            Expression e = new Expression(text);
+            if (degAndRadButton.getText().toString().equals("RAD"))
+                mXparser.setDegreesMode();
+            else if (degAndRadButton.getText().toString().equals("DEG"))
+                mXparser.setRadiansMode();
+            double result = 0;
+            result = e.calculate();
+            if (Double.isNaN(result)) {
+                textResult.setText("Math ERROR");
+                return;
             }
-        });
+            textResult.setText(formatNumber(result));
 
+        });
         sinButton.setOnClickListener(v -> {
             String text = textOperation.getText().toString();
             text += "sin(";
@@ -186,6 +183,13 @@ public class LandActivity extends AppCompatActivity {
             text += "#";
             textOperation.setText(text);
         });
+        degAndRadButton.setOnClickListener(v -> {
+            if (degAndRadButton.getText().toString().equals("DEG")) {
+                degAndRadButton.setText("RAD");
+            } else {
+                degAndRadButton.setText("DEG");
+            }
+        });
 
     }
 
@@ -208,8 +212,6 @@ public class LandActivity extends AppCompatActivity {
             int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
             numberButtons[i] = findViewById(resID);
         }
-
-        switchButton = findViewById(R.id.switchButton);
         textOperation = findViewById(R.id.textDisplay);
         textResult = findViewById(R.id.textDisplayResult);
 
@@ -267,6 +269,7 @@ public class LandActivity extends AppCompatActivity {
         piButton = findViewById(R.id.piButton);
         expButton = findViewById(R.id.expButton);
         ModuloButton = findViewById(R.id.ModuloButton);
+        degAndRadButton = findViewById(R.id.degAndRadButton);
     }
 
     public void getLastThenUpdate(String text, String operator) {

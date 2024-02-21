@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Calculatrice</string>
+    <string name="e">e <sup><small>x</small></sup></string>
+    <string name="rad">RAD</string>
 </resources>

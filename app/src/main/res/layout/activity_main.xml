@@ -11,26 +11,29 @@
 
     <TextView
         android:id="@+id/textDisplay"
+        android:layout_height="80dp"
         android:paddingHorizontal="5dp"
-        android:layout_height="180dp"
         android:text=""
         android:textAlignment="textEnd"
-        android:textSize="15sp"
-        android:textColor="@color/gray"/>
+        android:textColor="@color/gray"
+        android:textSize="15sp" />
+
     <TextView
         android:id="@+id/textDisplayResult"
+        android:backgroundTint="@color/lightGray"
         android:paddingHorizontal="5dp"
         android:paddingVertical="10dp"
         android:text="0"
-        android:textStyle="bold"
         android:textAlignment="textEnd"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:textStyle="bold" />
 
     <TableRow>
+
         <Button
             android:id="@+id/clearButton"
             style="@style/OperationsButtonStyle"
-            android:text="C" />
+            android:text="CE" />
 
         <Button
             android:id="@+id/deleteButton"
@@ -54,8 +57,7 @@
         <Button
             android:id="@+id/Button1"
             style="@style/ButtonStyle"
-            android:text="1"
-           />
+            android:text="1" />
 
         <Button
             android:id="@+id/Button2"
@@ -126,11 +128,6 @@
     <TableRow>
 
         <Button
-            android:id="@+id/switchButton"
-            style="@style/OperationsButtonStyle"
-            android:text="\u21C4"
-         />
-        <Button
             android:id="@+id/Button0"
             style="@style/ButtonStyle"
             android:text="0" />
@@ -143,7 +140,9 @@
         <Button
             android:id="@+id/equalButton"
             style="@style/EqualButtonStyle"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:text="="
-            android:textStyle="bold"/>
+            android:textStyle="bold" />
     </TableRow>
 </TableLayout>

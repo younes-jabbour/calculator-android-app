@@ -3,7 +3,6 @@ package ma.tp.calculatrice;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
@@ -13,13 +12,13 @@ import android.widget.TextView;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 
-import javax.script.ScriptEngine;
-
-import org.mariuszgromada.math.mxparser.Expression;
+import org.mariuszgromada.math.mxparser.*;
 
 public class MainActivity extends AppCompatActivity {
     private TextView textOperation, textResult;
-    private Button multiplyButton, minusButton, plusButton, switchButton, commaButton, equalButton, clearButton, deleteButton, percentButton, divideButton;
+    private Button degAndRadButton, multiplyButton, minusButton, plusButton, commaButton, equalButton,
+            clearButton, deleteButton, percentButton, divideButton;
+    Expression e;
     private Button[] numberButtons = new Button[10];
     private ArrayList<Button> operatorButtons = new ArrayList<>();
 
@@ -27,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initButtons(); // initialize the buttons
+        initButtons();
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -43,30 +42,13 @@ public class MainActivity extends AppCompatActivity {
         operatorButtons.add(plusButton);
         operatorButtons.add(commaButton);
 
-//        /**
-//         * switch button from portrait to landscape and vice versa
-//         */
-//        switchButton.setOnClickListener(v -> {
-//            Intent intent = new Intent(this, LandActivity.class);
-//            Bundle bundle2 = new Bundle();
-//            bundle2.putString("textOperation", textOperation.getText().toString());
-//            bundle2.putString("textResult", textResult.getText().toString());
-//            intent.putExtras(bundle2);
-//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE); // set the orientation to landscape
-//            startActivity(intent);
-//        });
-
-        /**
-         * listener to the operators [+,-,*,/]
+        /** listener to the operators [+,-,*,/]
          */
         for (Button button : operatorButtons) {
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String text = textOperation.getText().toString();
-                    text += ((Button) v).getText().toString();
-                    textOperation.setText(text);
-                }
+            button.setOnClickListener(v -> {
+                String text = textOperation.getText().toString();
+                text += ((Button) v).getText().toString();
+                textOperation.setText(text);
             });
         }
 
@@ -96,49 +78,44 @@ public class MainActivity extends AppCompatActivity {
                 textOperation.setText(text);
             }
         });
+
         /**
          * listener to the percent % button
          */
         percentButton.setOnClickListener(v -> {
             String numbers = textOperation.getText().toString();
             String originalText = numbers;
-            if (numbers.length() == 0) {
-                return;
-            }
-            if (isLastOperator(numbers))
+            if (numbers.length() == 0 || isLastOperator(numbers))
                 return;
 
-            numbers = replaceOperators(numbers);
-            String[] operation = numbers.split("[+\\-*/]");
-
-
+            String[] operation = replaceOperators(numbers).split("[+\\-*/]");
             double lastNumber = Double.parseDouble(operation[operation.length - 1]);
             lastNumber /= 100;
             String updatedOperation = originalText.substring(0, originalText.length() - operation[operation.length - 1].length());
             updatedOperation += lastNumber;
             textOperation.setText(updatedOperation);
         });
+
         /**
          * equal button listener
          */
         equalButton.setOnClickListener(v -> {
             String text = textOperation.getText().toString();
             text = replaceOperators(text);
+            if (isLastOperator(text))
+                return;
 
+            e = new Expression(text);
+
+            double result = 0;
             try {
-                // Evaluate the expression using the JavaScript engine
-                ScriptEngine engine = new javax.script.ScriptEngineManager().getEngineByName("rhino");
-                if (isLastOperator(text)) // if the last character is an operator, return without calculating
-                    return;
-
-                Expression e = new Expression(text);
-                double result = e.calculate();
+                result = e.calculate();
                 textResult.setText(formatNumber(result));
-
-            } catch (Exception e) {
+            } catch (Exception ex) {
                 textResult.setText("error");
             }
         });
+
     }
 
     @Override
@@ -181,7 +158,6 @@ public class MainActivity extends AppCompatActivity {
             int resID = getResources().getIdentifier(buttonID, "id", getPackageName());
             numberButtons[i] = findViewById(resID);
         }
-//        switchButton = findViewById(R.id.switchButton);
         textOperation = findViewById(R.id.textDisplay);
         textResult = findViewById(R.id.textDisplayResult);
 
@@ -194,14 +170,14 @@ public class MainActivity extends AppCompatActivity {
         plusButton = findViewById(R.id.plusButton);
         commaButton = findViewById(R.id.commaButton);
         equalButton = findViewById(R.id.equalButton);
+        degAndRadButton = findViewById(R.id.degAndRadButton);
     }
 
     public boolean isLastOperator(String text) {
         if (text.length() > 0) {
             String last = text.substring(text.length() - 1);
-            if (isOperator(last.charAt(0))) {
+            if (isOperator(last.charAt(0)))
                 return true;
-            }
         }
         return false;
     }
